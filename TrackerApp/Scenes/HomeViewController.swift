@@ -1,8 +1,7 @@
 import UIKit
 
-class HomeViewController: UITabBarController {
-
-    var onboarding: UIViewController?
+final class HomeViewController: UITabBarController {
+    private var onboarding: UIViewController?
 
     init(onboarding: UIViewController?) {
         self.onboarding = onboarding

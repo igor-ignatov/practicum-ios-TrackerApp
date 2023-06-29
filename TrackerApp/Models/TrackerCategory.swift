@@ -3,7 +3,7 @@ import Foundation
 struct TrackerCategory: Identifiable, Hashable {
     let id: UUID
     let label: String
-    let trackers: [Tracker]
+    var trackers: [Tracker]
 
     init(id: UUID = UUID(), label: String, trackers: [Tracker]) {
         self.id = id
