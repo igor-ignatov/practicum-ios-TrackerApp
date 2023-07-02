@@ -208,13 +208,19 @@ extension TrackersViewController {
     func trackerMarkedCompleted(_ cell: TrackerCollectionViewCell) {
         guard
             let indexPath = collectionView.indexPath(for: cell),
-            var tracker = dataSource.itemIdentifier(for: indexPath)
+            let tracker = dataSource.itemIdentifier(for: indexPath)
         else {
             assertionFailure("Can't find cell")
             return
         }
         
-        var isCompletedForDate = completedTrackers[selectedDate]?.contains { record in
+        let components = Calendar.current.dateComponents([.day], from: Date(), to: selectedDate)
+
+        if let days = components.day {
+            if days > 0  { return }
+        } else {}
+        
+        let isCompletedForDate = completedTrackers[selectedDate]?.contains { record in
             record.trackerId == tracker.id
         } ?? false
         
