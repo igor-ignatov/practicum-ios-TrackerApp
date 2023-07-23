@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22F66" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CategoryManagedObject" representedClassName="CategoryManagedObject" syncable="YES" codeGenerationType="class">
+        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" attributeType="String"/>
+        <relationship name="trackers" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="TrackerManagedObject" inverseName="category" inverseEntity="TrackerManagedObject"/>
+    </entity>
+    <entity name="RecordManagedObject" representedClassName="RecordManagedObject" syncable="YES" codeGenerationType="class">
+        <attribute name="executionDate" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="trackerId" attributeType="UUID" usesScalarValueType="NO"/>
+    </entity>
+    <entity name="TrackerManagedObject" representedClassName="TrackerManagedObject" syncable="YES" codeGenerationType="class">
+        <attribute name="emoji" attributeType="String"/>
+        <attribute name="hexColor" attributeType="String"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="schedule" attributeType="String"/>
+        <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="CategoryManagedObject" inverseName="trackers" inverseEntity="CategoryManagedObject"/>
+    </entity>
+</model>
