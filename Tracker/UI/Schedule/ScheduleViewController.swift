@@ -1,6 +1,16 @@
 import UIKit
 
+protocol ScheduleDelegate: AnyObject {
+    func didSelectDays(_ days: Set<WeekDay>)
+}
+
 final class ScheduleViewController: UIViewController {
+    
+    // MARK: - Delegate
+    
+    weak var delegate: ScheduleDelegate?
+    
+    // MARK: - UI
     
     private lazy var titleLabel = AppTitleLabel(title: "Расписание")
     
@@ -13,15 +23,15 @@ final class ScheduleViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var doneButton = AppButton(title: "Готово") { [weak self] in
-        guard let self else { return }
-        self.delegate?.didSelectDays(self.selectedDays)
-        self.dismiss(animated: true)
-    }
+    private lazy var doneButton: AppButton = {
+        let button = AppButton(title: "Готово")
+        button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    // MARK: - Properties
     
     private var selectedDays: Set<WeekDay> = []
-    
-    weak var delegate: ScheduleDelegate?
     
     // MARK: - Life Cycle
     
@@ -53,6 +63,14 @@ final class ScheduleViewController: UIViewController {
     private func setDelegates() {
         weekDaysTableView.delegate = self
         weekDaysTableView.dataSource = self
+    }
+    
+    // MARK: - Actions
+    
+    @objc
+    private func doneButtonTapped() {
+        delegate?.didSelectDays(self.selectedDays)
+        dismiss(animated: true)
     }
 }
 

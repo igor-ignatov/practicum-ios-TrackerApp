@@ -1,5 +1,10 @@
 import UIKit
 
+protocol WeekdayCellDelegate: AnyObject {
+    func didSelectDay(_ day: WeekDay)
+    func didDeselectDay(_ day: WeekDay)
+}
+
 final class WeekdayCell: UITableViewCell {
     
     // MARK: - UI
@@ -23,7 +28,7 @@ final class WeekdayCell: UITableViewCell {
     private var currentDay: WeekDay?
     weak var delegate: WeekdayCellDelegate?
     
-    // MARK: - Init
+    // MARK: - Life Cycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -53,7 +58,7 @@ final class WeekdayCell: UITableViewCell {
         weekdaySwitch.setOn(true, animated: false)
     }
     
-    // MARK: - Action
+    // MARK: - Actions
     
     @objc
     private func weekdaySwitchTapped() {

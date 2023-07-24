@@ -1,6 +1,9 @@
 import UIKit
 
 final class AppCollectionView: UICollectionView {
+    
+    // MARK: - Properties
+    
     override var contentSize:CGSize {
         didSet {
             invalidateIntrinsicContentSize()

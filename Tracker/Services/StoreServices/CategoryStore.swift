@@ -2,15 +2,24 @@ import Foundation
 import UIKit
 import CoreData
 
+protocol CategoryStoreProtocol {
+    var isEmpty: Bool { get }
+    var numberOfRowsInSection: Int { get }
+    func object(at indexPath: IndexPath) -> Category?
+    func add(_ category: Category)
+}
+
 final class CategoryStore: NSObject {
-    private let dataStore: DataStore
-    private let context: NSManagedObjectContext
     
-    // ???
-    private var insertedIndexes: IndexSet?
-    private var deletedIndexes: IndexSet?
+    // MARK: - Delegate
     
     private weak var delegate: StoreDelegate?
+    
+    // MARK: - Properties
+    
+    private let dataStore: DataStore
+    
+    private let context: NSManagedObjectContext
     
     // MARK: - FRC
     
@@ -74,7 +83,10 @@ final class CategoryStore: NSObject {
     }
 }
 
-extension CategoryStore {
+// MARK: - CategoryStoreProtocol
+
+extension CategoryStore: CategoryStoreProtocol {
+    
     var isEmpty: Bool {
         fetchedResultController.fetchedObjects?.isEmpty ?? true
     }

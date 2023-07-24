@@ -1,6 +1,15 @@
 import UIKit
 
+protocol TrackerCellDelegate: AnyObject {
+    func completeTracker(id: UUID, at indexPath: IndexPath)
+    func uncompleteTracker(id: UUID, at indexPath: IndexPath)
+}
+
 final class TrackerCell: UICollectionViewCell {
+    
+    // MARK: - Delegate
+    
+    weak var delegate: TrackerCellDelegate?
     
     // MARK: - UI
     
@@ -60,13 +69,13 @@ final class TrackerCell: UICollectionViewCell {
         return button
     }()
     
+    // MARK: - Properties
+    
     private var isCompletedToday: Bool = true
     private var trackerId: UUID?
     private var indexPath: IndexPath?
     
-    weak var delegate: TrackerCellDelegate?
-    
-    // MARK: - Init
+    // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -117,16 +126,6 @@ final class TrackerCell: UICollectionViewCell {
         }
     }
     
-    @objc
-    private func doneButtonTapped() {
-        guard let trackerId, let indexPath else { return }
-        if isCompletedToday {
-            delegate?.uncompleteTracker(id: trackerId, at: indexPath)
-        } else {
-            delegate?.completeTracker(id: trackerId, at: indexPath)
-        }
-    }
-    
     func configure(with tracker: Tracker, isCompletedToday: Bool, completedDays: Int, indexPath: IndexPath) {
         self.isCompletedToday = isCompletedToday
         self.trackerId = tracker.id
@@ -137,6 +136,18 @@ final class TrackerCell: UICollectionViewCell {
         doneButton.backgroundColor = tracker.color
         isCompletedToday ? setCompletedButton() : setUncompletedButton()
         counterLabel.text = pluralizeDays(completedDays)
+    }
+    
+    // MARK: - Actions
+    
+    @objc
+    private func doneButtonTapped() {
+        guard let trackerId, let indexPath else { return }
+        if isCompletedToday {
+            delegate?.uncompleteTracker(id: trackerId, at: indexPath)
+        } else {
+            delegate?.completeTracker(id: trackerId, at: indexPath)
+        }
     }
 }
 

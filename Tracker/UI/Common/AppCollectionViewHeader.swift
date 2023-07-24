@@ -2,6 +2,8 @@ import UIKit
 
 final class AppCollectionViewHeader: UICollectionReusableView {
     
+    // MARK: - UI
+    
     private lazy var headerTitleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .appBlack
@@ -9,6 +11,8 @@ final class AppCollectionViewHeader: UICollectionReusableView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -19,6 +23,8 @@ final class AppCollectionViewHeader: UICollectionReusableView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Setup UI
     
     private func setupView() {
         addSubview(headerTitleLabel)
