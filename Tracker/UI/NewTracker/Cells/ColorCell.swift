@@ -2,6 +2,8 @@ import UIKit
 
 final class ColorCell: UICollectionViewCell {
     
+    // MARK: - UI
+    
     private lazy var whiteView: UIView = {
         let view = UIView()
         view.frame = CGRect(x: 3, y: 3, width: 46, height: 46)
@@ -28,12 +30,15 @@ final class ColorCell: UICollectionViewCell {
         return view
     }()
     
+    // MARK: - Properties
+    
     override var isSelected: Bool {
         didSet {
-                borderView.backgroundColor = isSelected ? colorView.backgroundColor?.withAlphaComponent(0.3) : .clear
-            
+            borderView.backgroundColor = isSelected ? colorView.backgroundColor?.withAlphaComponent(0.3) : .clear
         }
     }
+    
+    // MARK: - Life Cycle
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -44,6 +49,8 @@ final class ColorCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: - Setup UI
     
     private func setupView() {
         contentView.addSubview(borderView)

@@ -1,11 +1,28 @@
 import Foundation
 import CoreData
 
+protocol TrackerStoreProtocol {
+    var isEmpty: Bool { get }
+    var numberOfSections: Int { get }
+    func numberOfRowsInSection(_ section: Int) -> Int
+    func add(_ tracker: Tracker, to category: Category)
+    func object(at indexPath: IndexPath) -> Tracker?
+    func header(at indexPath: IndexPath) -> String?
+    func filter(by date: Date, and searchText: String)
+}
+
 final class TrackerStore: NSObject {
-    private let dataStore: DataStore
-    private let context: NSManagedObjectContext
+    
+    // MARK: - Delegate
+    
     private weak var delegate: StoreDelegate?
     
+    // MARK: - Properties
+    
+    private let dataStore: DataStore
+    
+    private let context: NSManagedObjectContext
+
     // MARK: - FRC
     
     private lazy var fetchedResultController: NSFetchedResultsController<TrackerManagedObject> = {
@@ -65,7 +82,8 @@ final class TrackerStore: NSObject {
     }
 }
 
-extension TrackerStore {
+extension TrackerStore: TrackerStoreProtocol {
+    
     var isEmpty: Bool {
         fetchedResultController.sections?.isEmpty ?? true
     }

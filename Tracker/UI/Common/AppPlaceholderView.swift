@@ -29,7 +29,7 @@ final class AppPlaceholderView: UIView {
         return stackView
     }()
     
-    // MARK: - Init
+    // MARK: - Life Cycle
     
     init(image: UIImage?, text: String) {
         super.init(frame: .zero)

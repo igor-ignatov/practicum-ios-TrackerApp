@@ -1,20 +1,30 @@
 import UIKit
 
+protocol CreatingTrackerDelegate: AnyObject {
+    func didSelectTrackerType(_ type: TrackerType)
+}
+
 final class CreatingTrackerViewController: UIViewController {
+    
+    // MARK: - Delegate
+    
+    private weak var delegate: CreatingTrackerDelegate?
     
     // MARK: - UI
     
     private lazy var titleLabel = AppTitleLabel(title: "Создание трекера")
     
-    private lazy var habitButton = AppButton(title: "Привычка") { [weak self] in
-        self?.dismiss(animated: true)
-        self?.delegate?.didSelectTrackerType(.habit)
-    }
+    private lazy var habitButton: AppButton = {
+        let button = AppButton(title: "Привычка")
+        button.addTarget(self, action: #selector(habitButtonTapped), for: .touchUpInside)
+        return button
+    }()
     
-    private lazy var irregularEventsButton = AppButton(title: "Нерегулярные событие") { [weak self] in
-        self?.dismiss(animated: true)
-        self?.delegate?.didSelectTrackerType(.irregularEvent)
-    }
+    private lazy var irregularEventsButton: AppButton = {
+        let button = AppButton(title: "Нерегулярные событие")
+        button.addTarget(self, action: #selector(habitButtonTapped), for: .touchUpInside)
+        return button
+    }()
     
     private lazy var buttonsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [habitButton, irregularEventsButton])
@@ -23,8 +33,6 @@ final class CreatingTrackerViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-    
-    private weak var delegate: CreatingTrackerDelegate?
     
     // MARK: - Life Cycle
     
@@ -49,6 +57,20 @@ final class CreatingTrackerViewController: UIViewController {
         view.backgroundColor = .appWhite
         view.addSubview(titleLabel)
         view.addSubview(buttonsStackView)
+    }
+    
+    // MARK: - Actions
+    
+    @objc
+    private func habitButtonTapped() {
+        dismiss(animated: true)
+        delegate?.didSelectTrackerType(.habit)
+    }
+    
+    @objc
+    private func irregularEventsButtonTapped() {
+        dismiss(animated: true)
+        delegate?.didSelectTrackerType(.irregularEvent)
     }
 }
 

@@ -1,6 +1,14 @@
 import UIKit
 
+protocol NewCategoryDelegate: AnyObject {
+    func didCreateNewCategory(_ category: Category)
+}
+
 final class NewCategoryViewController: UIViewController {
+    
+    // MARK: - Delegate
+    
+    private weak var delegate: NewCategoryDelegate?
     
     // MARK: - UI
     
@@ -8,25 +16,12 @@ final class NewCategoryViewController: UIViewController {
     
     private lazy var textField = AppTextField(placeholder: "Введите название категории")
     
-    private lazy var finishedButton = AppButton(title: "Готово") { [weak self] in
-        guard
-            let self,
-            let text = self.textField.text,
-            text != ""
-        else { return }
-        
-        let newCategory = Category(
-            id: UUID(),
-            name: text,
-            trackers: []
-        )
-        
-        self.delegate?.didCreateNewCategory(newCategory)
-        self.dismiss(animated: true)
-    }
-    
-    private weak var delegate: NewCategoryDelegate?
-    
+    private lazy var finishedButton: AppButton = {
+        let button = AppButton(title: "Готово")
+        button.addTarget(self, action: #selector(finishedButtonTapped), for: .touchUpInside)
+        return button
+    }()
+
     // MARK: - Life Cycle
     
     init(delegate: NewCategoryDelegate) {
@@ -58,6 +53,16 @@ final class NewCategoryViewController: UIViewController {
     private func setDelegates() {
         textField.delegate = self
     }
+    
+    // MARK: - Actions
+    
+    @objc
+    private func finishedButtonTapped() {
+        guard let text = textField.text, text != "" else { return }
+        let newCategory = Category(id: UUID(), name: text, trackers: [])
+        delegate?.didCreateNewCategory(newCategory)
+        dismiss(animated: true)
+    }
 }
 
 // MARK: - UITextFieldDelegate
@@ -67,6 +72,10 @@ extension NewCategoryViewController: UITextFieldDelegate {
         let text = textField.text ?? ""
         let symbols = text.filter { $0.isNumber || $0.isLetter || $0.isSymbol || $0.isPunctuation }.count
         finishedButton.isEnabled = symbols != 0
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
     }
 }
 

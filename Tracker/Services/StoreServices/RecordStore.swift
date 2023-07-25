@@ -1,9 +1,20 @@
 import Foundation
 import CoreData
 
+protocol RecordStoreProtocol {
+    func isTrackerCompletedToday(by trackerId: UUID, and currentDate: Date) -> Bool
+    func completedTrackers(by trackerId: UUID) -> Int
+    func fetchRecord(by trackerId: UUID, and currentDate: Date) -> Record?
+    func add(_ record: Record, to trackerId: UUID)
+    func delete(_ record: Record)
+}
+
 final class RecordStore: NSObject {
     
+    // MARK: - Properties
+    
     private let dataStore: DataStore
+    
     private let context: NSManagedObjectContext
     
     // MARK: - Init
@@ -39,7 +50,8 @@ final class RecordStore: NSObject {
     }
 }
 
-extension RecordStore {
+extension RecordStore: RecordStoreProtocol {
+    
     func isTrackerCompletedToday(by trackerId: UUID, and currentDate: Date) -> Bool {
         fetchRecord(by: trackerId, and: currentDate) != nil
     }

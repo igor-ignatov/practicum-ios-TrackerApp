@@ -25,20 +25,17 @@ final class AppButton: UIButton {
 
     private var style: ButtonStyle = .normal
     private var height: CGFloat = 60
-    private var action: (() -> Void)?
     
-    // MARK: - Init
+    // MARK: - Life Cycle
     
     convenience init(
         title: String,
         style: ButtonStyle = .normal,
-        height: CGFloat = 60,
-        action: @escaping () -> Void
+        height: CGFloat = 60
     ) {
         self.init(type: .system)
         self.style = style
         self.height = height
-        self.action = action
         
         setTitle(title, for: .normal)
         setupButton()
@@ -82,15 +79,7 @@ final class AppButton: UIButton {
         
         layer.cornerRadius = 16
         titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         translatesAutoresizingMaskIntoConstraints = false
-    }
-    
-    // MARK: - Action
-    
-    @objc
-    private func buttonTapped() {
-        action?()
     }
 }
 

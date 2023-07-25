@@ -32,7 +32,6 @@ final class StatisticViewController: UIViewController {
 // MARK: - Setting Constraints
 
 extension StatisticViewController {
-
     private func setConstraints() {
         NSLayoutConstraint.activate([
             placeholderView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
@@ -40,6 +39,5 @@ extension StatisticViewController {
             placeholderView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
     }
-    
 }
 

@@ -2,6 +2,8 @@ import UIKit
 
 final class AppTabBarController: UITabBarController {
     
+    // MARK: - Properties
+    
     private enum Tabs: Int {
         case trackers
         case statistic
@@ -25,11 +27,15 @@ final class AppTabBarController: UITabBarController {
         }
     }
     
+    // MARK: - Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabBar()
         setupTabItems()
     }
+    
+    // MARK: - Setup UI
     
     private func setupTabBar() {
         let borderTop = UIView(frame: CGRect(x: 0, y: 0, width: tabBar.frame.size.width, height: 0.5))
