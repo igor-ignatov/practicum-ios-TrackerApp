@@ -39,13 +39,13 @@ final class CategoryStore: NSObject {
 
     // MARK: - Init
     
-    init(dataStore: DataStore, delegate: StoreDelegate) {
+    init(dataStore: DataStore, delegate: StoreDelegate?) {
         self.dataStore = dataStore
         self.context = dataStore.managedObjectContext
         self.delegate = delegate
     }
     
-    convenience init(delegate: StoreDelegate) {
+    convenience init(delegate: StoreDelegate? = nil) {
         self.init(dataStore: DataStore.shared, delegate: delegate)
     }
     
@@ -78,7 +78,8 @@ final class CategoryStore: NSObject {
             name: name,
             color: ColorMarshall.shared.decode(hexColor: hexColor),
             emoji: emoji,
-            schedule: WeekDayMarshall.shared.decode(weekDays: scheduleString)
+            schedule: WeekDayMarshall.shared.decode(weekDays: scheduleString),
+            isPinned: managedObject.isPinned
         )
     }
 }

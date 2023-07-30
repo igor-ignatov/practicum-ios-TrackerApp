@@ -14,7 +14,10 @@ final class FirstOnboarding: UIViewController {
     
     private lazy var label: UILabel = {
         let label = UILabel()
-        label.text = "Отслеживайте только то, что хотите"
+        label.text = NSLocalizedString(
+            "onboarding.firstScreenTitle",
+            comment: "Text that is displayed in onboarding"
+        )
         label.font = .systemFont(ofSize: 32, weight: .bold)
         label.numberOfLines = 3
         label.textColor = .appBlack

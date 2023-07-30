@@ -2,14 +2,20 @@ import Foundation
 import CoreData
 
 protocol RecordStoreProtocol {
+    var isEmpty: Bool { get }
     func isTrackerCompletedToday(by trackerId: UUID, and currentDate: Date) -> Bool
     func completedTrackers(by trackerId: UUID) -> Int
     func fetchRecord(by trackerId: UUID, and currentDate: Date) -> Record?
+    func fetchNumberOfAllRecords() -> Int
     func add(_ record: Record, to trackerId: UUID)
     func delete(_ record: Record)
 }
 
 final class RecordStore: NSObject {
+    
+    // MARK: - Delegate
+    
+    private weak var delegate: StoreDelegate?
     
     // MARK: - Properties
     
@@ -17,16 +23,33 @@ final class RecordStore: NSObject {
     
     private let context: NSManagedObjectContext
     
+    // MARK: - FRC
+    
+    private lazy var fetchedResultController: NSFetchedResultsController<RecordManagedObject> = {
+        let request = RecordManagedObject.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(key: "executionDate", ascending: true)]
+        let fetchedResultController = NSFetchedResultsController(
+            fetchRequest: request,
+            managedObjectContext: context,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
+        fetchedResultController.delegate = self
+        try? fetchedResultController.performFetch()
+        return fetchedResultController
+    }()
+    
     // MARK: - Init
     
-    init(dataStore: DataStore) {
+    init(dataStore: DataStore, delegate: StoreDelegate?) {
+        self.delegate = delegate
         self.dataStore = dataStore
         self.context = dataStore.managedObjectContext
         super.init()
     }
     
-    override convenience init() {
-        self.init(dataStore: DataStore.shared)
+    convenience init(delegate: StoreDelegate? = nil) {
+        self.init(dataStore: DataStore.shared, delegate: delegate)
     }
     
     // MARK: - Convert
@@ -50,7 +73,13 @@ final class RecordStore: NSObject {
     }
 }
 
+// MARK: - RecordStoreProtocol
+
 extension RecordStore: RecordStoreProtocol {
+    
+    var isEmpty: Bool {
+        fetchNumberOfAllRecords() == 0
+    }
     
     func isTrackerCompletedToday(by trackerId: UUID, and currentDate: Date) -> Bool {
         fetchRecord(by: trackerId, and: currentDate) != nil
@@ -76,6 +105,11 @@ extension RecordStore: RecordStoreProtocol {
         return convert(managedObject: recordManagedObject)
     }
     
+    func fetchNumberOfAllRecords() -> Int {
+        guard let recordManagedObjects = fetchedResultController.fetchedObjects else { return 0 }
+        return recordManagedObjects.count
+    }
+    
     func add(_ record: Record, to trackerId: UUID) {
         try? dataStore.performSync { context in
             Result {
@@ -99,6 +133,14 @@ extension RecordStore: RecordStoreProtocol {
                 try context.save()
             }
         }
+    }
+}
+
+// MARK: - NSFetchedResultsControllerDelegate
+
+extension RecordStore: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        delegate?.didUpdate()
     }
 }
 

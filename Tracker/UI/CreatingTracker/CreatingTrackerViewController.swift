@@ -12,16 +12,31 @@ final class CreatingTrackerViewController: UIViewController {
     
     // MARK: - UI
     
-    private lazy var titleLabel = AppTitleLabel(title: "Создание трекера")
+    private lazy var titleLabel = AppTitleLabel(
+        title: NSLocalizedString(
+            "creatingTracker.title",
+            comment: "Screen title"
+        )
+    )
     
     private lazy var habitButton: AppButton = {
-        let button = AppButton(title: "Привычка")
+        let button = AppButton(
+            title: NSLocalizedString(
+                "creatingTracker.habitButton",
+                comment: "Button text"
+            )
+        )
         button.addTarget(self, action: #selector(habitButtonTapped), for: .touchUpInside)
         return button
     }()
     
     private lazy var irregularEventsButton: AppButton = {
-        let button = AppButton(title: "Нерегулярные событие")
+        let button = AppButton(
+            title: NSLocalizedString(
+                "creatingTracker.irregularEventButton",
+                comment: "Button text"
+            )
+        )
         button.addTarget(self, action: #selector(habitButtonTapped), for: .touchUpInside)
         return button
     }()

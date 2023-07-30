@@ -15,7 +15,11 @@ final class OnboardingViewController: UIPageViewController {
     }()
     
     private lazy var endOnboardingButton: AppButton = {
-        let button = AppButton(title: "Вот это технологии!", height: 60)
+        let buttonText = NSLocalizedString(
+            "onboarding.button",
+            comment: "Text that is displayed in the button on the onboarding"
+        )
+        let button = AppButton(title: buttonText, height: 60)
         button.addTarget(self, action: #selector(endOnboardingButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -69,14 +73,20 @@ final class OnboardingViewController: UIPageViewController {
 // MARK: - UIPageViewControllerDataSource
 
 extension OnboardingViewController: UIPageViewControllerDataSource {
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+    func pageViewController(
+        _ pageViewController: UIPageViewController,
+        viewControllerBefore viewController: UIViewController
+    ) -> UIViewController? {
         guard let viewControllerIndex = pages.firstIndex(of: viewController) else { return nil }
         var previousIndex = viewControllerIndex - 1
         if previousIndex < 0 { previousIndex = pages.count - 1 }
         return pages[previousIndex]
     }
     
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+    func pageViewController(
+        _ pageViewController: UIPageViewController,
+        viewControllerAfter viewController: UIViewController
+    ) -> UIViewController? {
         guard let viewControllerIndex = pages.firstIndex(of: viewController) else { return nil }
         var nextIndex = viewControllerIndex + 1
         if nextIndex == pages.count { nextIndex = 0 }
@@ -87,7 +97,12 @@ extension OnboardingViewController: UIPageViewControllerDataSource {
 // MARK: - UIPageViewControllerDelegate
 
 extension OnboardingViewController: UIPageViewControllerDelegate {
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+    func pageViewController(
+        _ pageViewController: UIPageViewController,
+        didFinishAnimating finished: Bool,
+        previousViewControllers: [UIViewController],
+        transitionCompleted completed: Bool
+    ) {
         if let currentViewController = pageViewController.viewControllers?.first,
            let currentIndex = pages.firstIndex(of: currentViewController) {
             pageControl.currentPage = currentIndex

@@ -11,9 +11,15 @@ final class AppTabBarController: UITabBarController {
         var title: String {
             switch self {
             case .trackers:
-                return "Трекеры"
+                return NSLocalizedString(
+                    "tabBar.trackersTab",
+                    comment: "Tab title"
+                )
             case .statistic:
-                return "Статистика"
+                return NSLocalizedString(
+                    "tabBar.statsTab",
+                    comment: "Tab title"
+                )
             }
         }
         
@@ -54,7 +60,7 @@ final class AppTabBarController: UITabBarController {
             case .trackers:
                 return wrapInNavigationController(TrackersViewController())
             case .statistic:
-                return wrapInNavigationController(StatisticViewController())
+                return wrapInNavigationController(StatsViewController())
             }
         }
         
