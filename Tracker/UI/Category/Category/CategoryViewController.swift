@@ -4,9 +4,20 @@ final class CategoryViewController: UIViewController {
     
     // MARK: - UI
     
-    private lazy var titleLabel = AppTitleLabel(title: "Категория")
+    private lazy var titleLabel = AppTitleLabel(
+        title: NSLocalizedString(
+            "category.title",
+            comment: "Screen title"
+        )
+    )
     
-    private lazy var placeholderView = AppPlaceholderView(image: UIImage.emptyList, text: "Привычки и события можно объединить по смыслу")
+    private lazy var placeholderView = AppPlaceholderView(
+        image: UIImage.emptyList,
+        text: NSLocalizedString(
+            "category.emptyPlaceholderView",
+            comment: "Text that is displayed on the placeholder"
+        )
+    )
     
     private lazy var tableView: AppTableView = {
         let tableView = AppTableView(frame: .zero)
@@ -20,7 +31,12 @@ final class CategoryViewController: UIViewController {
     }()
     
     private lazy var addCategoryButton: AppButton = {
-        let button = AppButton(title: "Добавить категорию")
+        let button = AppButton(
+            title: NSLocalizedString(
+                "category.addButton",
+                comment: "Button text"
+            )
+        )
         button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return button
     }()

@@ -29,6 +29,15 @@ final class TrackerCell: UICollectionViewCell {
         return view
     }()
     
+    private lazy var pinnedImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "icon-pinned")
+        imageView.contentMode = .center
+        imageView.isHidden = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .medium)
@@ -75,6 +84,10 @@ final class TrackerCell: UICollectionViewCell {
     private var trackerId: UUID?
     private var indexPath: IndexPath?
     
+    var previewView: UIView {
+        wrapperView
+    }
+    
     // MARK: - Life Cycle
     
     override init(frame: CGRect) {
@@ -93,6 +106,7 @@ final class TrackerCell: UICollectionViewCell {
         addSubview(wrapperView)
         wrapperView.addSubview(backingView)
         wrapperView.addSubview(titleLabel)
+        wrapperView.addSubview(pinnedImageView)
         backingView.addSubview(emojiLabel)
         addSubview(counterLabel)
         addSubview(doneButton)
@@ -114,19 +128,12 @@ final class TrackerCell: UICollectionViewCell {
         )
     }
     
-    private func pluralizeDays(_ number: Int) -> String {
-        let remainder10 = number % 10
-        let remainder100 = number % 100
-        if remainder10 == 1 && remainder100 != 11 {
-            return "\(number) день"
-        } else if remainder10 >= 2 && remainder10 <= 4 && (remainder100 < 10 || remainder100 >= 20) {
-            return "\(number) дня"
-        } else {
-            return "\(number) дней"
-        }
-    }
-    
-    func configure(with tracker: Tracker, isCompletedToday: Bool, completedDays: Int, indexPath: IndexPath) {
+    func configure(
+        with tracker: Tracker,
+        isCompletedToday: Bool,
+        completedDays: Int,
+        indexPath: IndexPath
+    ) {
         self.isCompletedToday = isCompletedToday
         self.trackerId = tracker.id
         self.indexPath = indexPath
@@ -134,8 +141,12 @@ final class TrackerCell: UICollectionViewCell {
         titleLabel.text = tracker.name
         emojiLabel.text = tracker.emoji
         doneButton.backgroundColor = tracker.color
+        pinnedImageView.isHidden = !tracker.isPinned
         isCompletedToday ? setCompletedButton() : setUncompletedButton()
-        counterLabel.text = pluralizeDays(completedDays)
+        counterLabel.text = String.localizedStringWithFormat(
+            NSLocalizedString("numberOfDays", comment: "Number of days"),
+            completedDays
+        )
     }
     
     // MARK: - Actions
@@ -165,6 +176,11 @@ extension TrackerCell {
             backingView.leadingAnchor.constraint(equalTo: wrapperView.leadingAnchor, constant: 12),
             backingView.widthAnchor.constraint(equalToConstant: 24),
             backingView.heightAnchor.constraint(equalToConstant: 24),
+            
+            pinnedImageView.topAnchor.constraint(equalTo: wrapperView.topAnchor, constant: 12),
+            pinnedImageView.trailingAnchor.constraint(equalTo: wrapperView.trailingAnchor, constant: -4),
+            pinnedImageView.widthAnchor.constraint(equalToConstant: 24),
+            pinnedImageView.heightAnchor.constraint(equalToConstant: 24),
             
             emojiLabel.centerXAnchor.constraint(equalTo: backingView.centerXAnchor),
             emojiLabel.centerYAnchor.constraint(equalTo: backingView.centerYAnchor),

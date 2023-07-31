@@ -29,6 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window?.rootViewController = AppTabBarController()
         }
         window?.makeKeyAndVisible()
+        try? AnalyticsService.shared.activate()
         return true
     }
     

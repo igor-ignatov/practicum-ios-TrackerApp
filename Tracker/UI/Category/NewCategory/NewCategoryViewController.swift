@@ -12,12 +12,27 @@ final class NewCategoryViewController: UIViewController {
     
     // MARK: - UI
     
-    private lazy var titleLabel = AppTitleLabel(title: "Новая категория")
+    private lazy var titleLabel = AppTitleLabel(
+        title: NSLocalizedString(
+            "newCategory.title",
+            comment: "Screen title"
+        )
+    )
     
-    private lazy var textField = AppTextField(placeholder: "Введите название категории")
+    private lazy var textField = AppTextField(
+        placeholder: NSLocalizedString(
+            "newCategory.nameTextFieldPlaceholder",
+            comment: "Placeholder text"
+        )
+    )
     
     private lazy var finishedButton: AppButton = {
-        let button = AppButton(title: "Готово")
+        let button = AppButton(
+            title: NSLocalizedString(
+                "newCategory.doneButton",
+                comment: "Button text"
+            )
+        )
         button.addTarget(self, action: #selector(finishedButtonTapped), for: .touchUpInside)
         return button
     }()

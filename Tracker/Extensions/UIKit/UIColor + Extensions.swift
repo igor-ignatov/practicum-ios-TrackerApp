@@ -27,6 +27,9 @@ extension UIColor {
     static let appLightGray = UIColor(red: 0.90, green: 0.91, blue: 0.92, alpha: 1.00)
     static let appRed = UIColor(red: 0.96, green: 0.42, blue: 0.42, alpha: 1.00)
     static let appBlue = UIColor(red: 0.22, green: 0.45, blue: 0.91, alpha: 1.00)
+    static let gradientRed = UIColor(red: 0.99, green: 0.29, blue: 0.28, alpha: 1.00)
+    static let gradientBlue = UIColor(red: 0.00, green: 0.48, blue: 0.98, alpha: 1.00)
+    static let gradientGreen = UIColor(red: 0.27, green: 0.90, blue: 0.62, alpha: 1.00)
     
     // Colors selection
     static let colorSelection1 = UIColor(red: 0.99, green: 0.30, blue: 0.29, alpha: 1.00)

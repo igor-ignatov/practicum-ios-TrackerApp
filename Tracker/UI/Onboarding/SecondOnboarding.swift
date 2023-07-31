@@ -14,7 +14,10 @@ final class SecondOnboarding: UIViewController {
     
     private lazy var label: UILabel = {
         let label = UILabel()
-        label.text = "Даже если это не литры воды и йога"
+        label.text = NSLocalizedString(
+            "onboarding.secondScreenTitle",
+            comment: "Text that is displayed in onboarding"
+        )
         label.font = .systemFont(ofSize: 32, weight: .bold)
         label.numberOfLines = 3
         label.textColor = .appBlack

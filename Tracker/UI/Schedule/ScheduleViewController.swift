@@ -12,9 +12,14 @@ final class ScheduleViewController: UIViewController {
     
     // MARK: - UI
     
-    private lazy var titleLabel = AppTitleLabel(title: "Расписание")
+    private lazy var titleLabel = AppTitleLabel(
+        title: NSLocalizedString(
+            "schedule.title",
+            comment: "Screen title"
+        )
+    )
     
-    private lazy var weekDaysTableView: UITableView = {
+    private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero)
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.separatorColor = .appGray
@@ -24,7 +29,12 @@ final class ScheduleViewController: UIViewController {
     }()
     
     private lazy var doneButton: AppButton = {
-        let button = AppButton(title: "Готово")
+        let button = AppButton(
+            title: NSLocalizedString(
+                "schedule.doneButton",
+                comment: "Button text"
+            )
+        )
         button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -56,13 +66,13 @@ final class ScheduleViewController: UIViewController {
     private func setupView() {
         view.backgroundColor = .appWhite
         view.addSubview(titleLabel)
-        view.addSubview(weekDaysTableView)
+        view.addSubview(tableView)
         view.addSubview(doneButton)
     }
     
     private func setDelegates() {
-        weekDaysTableView.delegate = self
-        weekDaysTableView.dataSource = self
+        tableView.delegate = self
+        tableView.dataSource = self
     }
     
     // MARK: - Actions
@@ -132,10 +142,10 @@ extension ScheduleViewController {
             titleLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
-            weekDaysTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
-            weekDaysTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            weekDaysTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            weekDaysTableView.bottomAnchor.constraint(equalTo: doneButton.topAnchor, constant: -16),
+            tableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
+            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            tableView.bottomAnchor.constraint(equalTo: doneButton.topAnchor, constant: -16),
             
             doneButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             doneButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),

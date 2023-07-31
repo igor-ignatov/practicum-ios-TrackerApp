@@ -22,4 +22,8 @@ final class AppTitleLabel: UILabel {
         textAlignment = .center
         translatesAutoresizingMaskIntoConstraints = false
     }
+    
+    func setTitle(_ title: String) {
+        text = title
+    }
 }
